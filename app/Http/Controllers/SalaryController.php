@@ -82,7 +82,6 @@ use App\User;
 // Updated import statement
 use Qs;
 
-// Ensure Qs is correctly imported
 
 class SalaryController extends Controller
 {
@@ -101,17 +100,17 @@ class SalaryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
             'receiver' => 'required|integer|exists:users,id',
             'amount' => 'required|numeric|min:0',
             'month' => 'required|string|max:20',
             'year' => 'required|string|max:4',
             'type' => 'required|in:yearly,monthly',
         ]);
-
+        $validated['user_id'] = auth()->user()->id;
         Salary::create($validated);
-        return Qs::storeOk('salaries.index'); // Updated to use Qs helper
+        return Qs::storeOk('salaries.index');
     }
+
 
     public function show($id)
     {
@@ -129,7 +128,6 @@ class SalaryController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
             'receiver' => 'required|integer|exists:users,id',
             'amount' => 'required|numeric|min:0',
             'month' => 'required|string|max:20',
@@ -138,10 +136,13 @@ class SalaryController extends Controller
         ]);
 
         $salary = Salary::findOrFail($id);
-        $salary->update($validated);
-        return Qs::updateOk('salaries.index'); // Updated to use Qs helper
-    }
 
+        $validated['user_id'] = $salary->user_id;
+
+        $salary->update($validated);
+
+        return response()->json(['success' => true, 'message' => 'Salary updated successfully!']);
+    }
     public function destroy($id)
     {
         $salary = Salary::findOrFail($id);
