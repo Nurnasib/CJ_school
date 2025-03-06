@@ -9,7 +9,8 @@
             {!! Qs::getPanelOptions() !!}
         </div>
         <div class="card-body">
-            <form method="post" action="{{ route('salaries.update', $salary->id) }}" class="ajax-update">
+
+            <form method="post" action="{{ route('salaries.update', $salary->id) }}" >
                 @csrf
                 @method('PUT')
 

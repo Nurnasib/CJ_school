@@ -6,7 +6,6 @@
             <h6 class="card-title">Salary Records</h6>
             {!! Qs::getPanelOptions() !!}
         </div>
-
         <div class="card-body">
             <ul class="nav nav-tabs nav-tabs-highlight">
                 <li class="nav-item"><a href="#all-salaries" class="nav-link active" data-toggle="tab">Manage Salaries</a></li>
@@ -28,7 +27,6 @@
                             <th>Action</th>
                         </tr>
                         </thead>
-                        <!-- Keep the rest as is, update only the table body -->
                         <tbody>
                         @forelse($salaries as $salary)
                             <tr>

@@ -10,7 +10,7 @@
         </div>
 
         <div class="card-body">
-            <form method="post" action="{{ route('salaries.store') }}" class="ajax-store">
+            <form method="post" action="{{ route('salaries.store') }}">
                 @csrf
                 <div class="form-group row">
                     <div class="col-lg-9">
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-            </form> <!-- Corrected: Form is now properly closed -->
+            </form>
         </div>
     </div>
 @endsection

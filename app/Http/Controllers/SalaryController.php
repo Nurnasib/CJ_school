@@ -1,10 +1,87 @@
 <?php
+////
+////namespace App\Http\Controllers;
+////
+////use Illuminate\Http\Request;
+////use App\Models\Salary;
+////use App\User; // Updated import statement
+////
+////class SalaryController extends Controller
+////{
+////    public function index()
+////    {
+////        $salaries = Salary::with(['user', 'receiverUser'])->get();
+////        return view('pages.support_team.salary.list', compact('salaries'));
+////    }
+////
+////    public function create()
+////    {
+////        $users = User::all();
+////        return view('pages.support_team.salary.create', compact('users'));
+////    }
+////
+////    public function store(Request $request)
+////    {
+////        $validated = $request->validate([
+////            'user_id' => 'required|integer|exists:users,id',
+////            'receiver' => 'required|integer|exists:users,id',
+////            'amount' => 'required|numeric|min:0',
+////            'month' => 'required|string|max:20',
+////            'year' => 'required|string|max:4',
+////            'type' => 'required|in:yearly,monthly',
+////        ]);
+////
+////        Salary::create($validated);
+////        return redirect()->route('salaries.index')->with('success', 'Salary created successfully');
+////    }
+////
+////    public function show($id)
+////    {
+////        $salary = Salary::findOrFail($id);
+////        return view('pages.support_team.salary.show', compact('salary'));
+////    }
+////
+////    public function edit($id)
+////    {
+////        $salary = Salary::findOrFail($id);
+////        $users = User::all();
+////        return view('pages.support_team.salary.edit', compact('salary', 'users'));
+////    }
+////
+////    public function update(Request $request, $id)
+////    {
+////        $validated = $request->validate([
+////            'user_id' => 'required|integer|exists:users,id',
+////            'receiver' => 'required|integer|exists:users,id',
+////            'amount' => 'required|numeric|min:0',
+////            'month' => 'required|string|max:20',
+////            'year' => 'required|string|max:4',
+////            'type' => 'required|in:yearly,monthly',
+////        ]);
+////
+////        $salary = Salary::findOrFail($id);
+////        $salary->update($validated);
+////        return redirect()->route('salaries.index')->with('success', 'Salary updated successfully');
+////    }
+////
+////    public function destroy($id)
+////    {
+////        $salary = Salary::findOrFail($id);
+////        $salary->delete();
+////        return redirect()->route('salaries.index')->with('success', 'Salary deleted successfully');
+////    }
+////}
+//
 //
 //namespace App\Http\Controllers;
 //
 //use Illuminate\Http\Request;
 //use App\Models\Salary;
-//use App\User; // Updated import statement
+//use App\User;
+//
+//// Updated import statement
+//use Qs;
+//
 //
 //class SalaryController extends Controller
 //{
@@ -23,17 +100,17 @@
 //    public function store(Request $request)
 //    {
 //        $validated = $request->validate([
-//            'user_id' => 'required|integer|exists:users,id',
 //            'receiver' => 'required|integer|exists:users,id',
 //            'amount' => 'required|numeric|min:0',
 //            'month' => 'required|string|max:20',
 //            'year' => 'required|string|max:4',
 //            'type' => 'required|in:yearly,monthly',
 //        ]);
-//
+//        $validated['user_id'] = auth()->user()->id;
 //        Salary::create($validated);
-//        return redirect()->route('salaries.index')->with('success', 'Salary created successfully');
+//        return Qs::storeOk('salaries.index');
 //    }
+//
 //
 //    public function show($id)
 //    {
@@ -51,7 +128,6 @@
 //    public function update(Request $request, $id)
 //    {
 //        $validated = $request->validate([
-//            'user_id' => 'required|integer|exists:users,id',
 //            'receiver' => 'required|integer|exists:users,id',
 //            'amount' => 'required|numeric|min:0',
 //            'month' => 'required|string|max:20',
@@ -60,15 +136,18 @@
 //        ]);
 //
 //        $salary = Salary::findOrFail($id);
-//        $salary->update($validated);
-//        return redirect()->route('salaries.index')->with('success', 'Salary updated successfully');
-//    }
 //
+//        $validated['user_id'] = $salary->user_id;
+//
+//        $salary->update($validated);
+//
+//        return response()->json(['success' => true, 'message' => 'Salary updated successfully!']);
+//    }
 //    public function destroy($id)
 //    {
 //        $salary = Salary::findOrFail($id);
 //        $salary->delete();
-//        return redirect()->route('salaries.index')->with('success', 'Salary deleted successfully');
+//        return Qs::deleteOk('salaries.index'); // Updated to use Qs helper
 //    }
 //}
 
@@ -78,10 +157,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Salary;
 use App\User;
+use App\Helpers\Qs;
 
-// Updated import statement
-use Qs;
-
+// Fixed import
 
 class SalaryController extends Controller
 {
@@ -96,7 +174,6 @@ class SalaryController extends Controller
         $users = User::all();
         return view('pages.support_team.salary.create', compact('users'));
     }
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -106,11 +183,12 @@ class SalaryController extends Controller
             'year' => 'required|string|max:4',
             'type' => 'required|in:yearly,monthly',
         ]);
-        $validated['user_id'] = auth()->user()->id;
+
+        $validated['user_id'] = auth()->id();
         Salary::create($validated);
+
         return Qs::storeOk('salaries.index');
     }
-
 
     public function show($id)
     {
@@ -140,13 +218,12 @@ class SalaryController extends Controller
         $validated['user_id'] = $salary->user_id;
 
         $salary->update($validated);
-
-        return response()->json(['success' => true, 'message' => 'Salary updated successfully!']);
+        return Qs::updateOk('salaries.index');
     }
     public function destroy($id)
     {
         $salary = Salary::findOrFail($id);
         $salary->delete();
-        return Qs::deleteOk('salaries.index'); // Updated to use Qs helper
+        return Qs::deleteOk('salaries.index');
     }
 }
