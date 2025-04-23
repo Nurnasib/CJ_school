@@ -43,7 +43,7 @@ class StudentRecordCreate extends FormRequest
             'examiner' => 'sometimes|nullable|string|max:255',
             'is_residential' => 'sometimes|nullable|in:0,1',
             'department' => 'sometimes|nullable|in:noorani,najera,hifz,sunani',
-            'photo' => 'sometimes|nullable|image|mimes:jpeg,gif,png,jpg|max:2048',
+            'photo' => 'sometimes|nullable|image|max:2048',
             'my_parent_id' => 'sometimes|nullable|exists:users,id',
             'discount' => 'sometimes|nullable|integer',
             'house' => 'sometimes|nullable|string|max:255',

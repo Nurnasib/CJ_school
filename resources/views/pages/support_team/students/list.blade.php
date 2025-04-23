@@ -40,7 +40,22 @@
                                 <td>{{ $s->adm_no }}</td>
                                 <td>{{ $s->section ? $s->section->name : 'N/A' }}</td>
                                 <td>{{ $s->user->phone }}</td>
-                                <td>{{ $s->department ?? 'N/A' }}</td>
+                                <td>
+                                    @if(isset($s->department))
+                                        @if($s->department=='noorani')
+                                            নূরাণী বিভাগ
+                                        @elseif($s->department=='najera')
+                                            নাজেরা বিভাগ
+                                        @elseif($s->department=='hifz')
+                                            হিফজ বিভাগ
+                                        @else
+                                            শুনানি বিভাগ
+                                        @endif
+                                    @else
+                                        N/A
+                                    @endif
+
+                                </td>
                                 <td class="text-center">
                                     <div class="list-icons">
                                         <div class="dropdown">

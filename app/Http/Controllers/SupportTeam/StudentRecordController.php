@@ -69,12 +69,12 @@ class StudentRecordController extends Controller
             $photo = $req->file('photo');
             $f = Qs::getFileMetaData($photo);
             $f['name'] = 'photo_' . time() . '.' . $f['ext'];
-            $destinationPath = public_path('uploads/students/' . $userData['name']);
+            $destinationPath = public_path('storage/students/' . $userData['name'].$userData['phone']);
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0775, true);
             }
             $photo->move($destinationPath, $f['name']);
-            $userData['photo'] = 'uploads/students/' . $userData['name'] . '/' . $f['name'];
+            $userData['photo'] = 'storage/students/' . $userData['name'].$userData['phone'] . '/' . $f['name'];
         }
         $userData['code'] = strtoupper(Str::random(10));
         $user = $this->user->create($userData);
@@ -204,15 +204,19 @@ class StudentRecordController extends Controller
             $userData['name'] = $req->student_name;
 
             if ($req->hasFile('photo')) {
+                $path = Qs::getUploadPath('students') . $studentRecord->user->name.$studentRecord->user->phone;
+                if (Storage::exists($path)) {
+                    Storage::deleteDirectory($path);
+                }
                 $photo = $req->file('photo');
                 $f = Qs::getFileMetaData($photo);
                 $f['name'] = 'photo_' . time() . '.' . $f['ext'];
-                $destinationPath = public_path('uploads/students/' . $userData['name']);
+                $destinationPath = public_path('storage/students/' . $userData['name'].$userData['phone']);
                 if (!file_exists($destinationPath)) {
                     mkdir($destinationPath, 0775, true);
                 }
                 $photo->move($destinationPath, $f['name']);
-                $userData['photo'] = 'uploads/students/' . $userData['name'] . '/' . $f['name'];
+                $userData['photo'] = 'storage/students/' . $userData['name'].$userData['phone'] . '/' . $f['name'];
             }
 
             $this->user->update($studentRecord->user_id, $userData);
@@ -250,7 +254,8 @@ class StudentRecordController extends Controller
         if (!$sr->user) {
             return back()->with('flash_danger', 'User relationship not found for student');
         }
-        $path = Qs::getUploadPath('student') . $sr->user->name;
+        $path = Qs::getUploadPath('students') . $sr->user->name. $sr->user->phone;
+
         if (Storage::exists($path)) {
             Storage::deleteDirectory($path);
         }

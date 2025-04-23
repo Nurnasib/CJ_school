@@ -242,7 +242,7 @@ class Qs
 
     public static function getUploadPath($user_type)
     {
-        return 'uploads/'.$user_type.'/';
+        return $user_type.'/';
     }
 
     public static function getFileMetaData($file)
