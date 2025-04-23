@@ -269,18 +269,18 @@
                 </div>
                 <div class="row">
                     <!-- Department and Residential Status -->
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Department:</label>
-                            <select name="department" class="select-search form-control" data-placeholder="Choose Department">
-                                <option value=""></option>
-                                <option {{ (old('department', $sr->department) == 'noorani') ? 'selected' : '' }} value="noorani">নূরাণী বিভাগ</option>
-                                <option {{ (old('department', $sr->department) == 'najera') ? 'selected' : '' }} value="najera">নাজেরা বিভাগ</option>
-                                <option {{ (old('department', $sr->department) == 'hifz') ? 'selected' : '' }} value="hifz">হিফয বিভাগ</option>
-                                <option {{ (old('department', $sr->department) == 'sunani') ? 'selected' : '' }} value="sunani">শুনানি বিভাগ</option>
-                            </select>
-                        </div>
-                    </div>
+{{--                    <div class="col-md-4">--}}
+{{--                        <div class="form-group">--}}
+{{--                            <label>Department:</label>--}}
+{{--                            <select name="department" class="select-search form-control" data-placeholder="Choose Department">--}}
+{{--                                <option value=""></option>--}}
+{{--                                <option {{ (old('department', $sr->department) == 'noorani') ? 'selected' : '' }} value="noorani">নূরাণী বিভাগ</option>--}}
+{{--                                <option {{ (old('department', $sr->department) == 'najera') ? 'selected' : '' }} value="najera">নাজেরা বিভাগ</option>--}}
+{{--                                <option {{ (old('department', $sr->department) == 'hifz') ? 'selected' : '' }} value="hifz">হিফয বিভাগ</option>--}}
+{{--                                <option {{ (old('department', $sr->department) == 'sunani') ? 'selected' : '' }} value="sunani">শুনানি বিভাগ</option>--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Residential Status:</label>
