@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta id="csrf-token" name="csrf-token" content="{{ csrf_token() }}">
     <meta name="author" content="CJ Inspired">
+    <link rel="icon" href="{{ asset('frontend/images/logo.png')}}" type="image/png">
 
     <title> @yield('page_title') | {{ config('app.name') }} </title>
     <style>
