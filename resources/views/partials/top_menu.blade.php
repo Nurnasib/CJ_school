@@ -40,7 +40,7 @@
                     @endphp
                     @if(isset($noticeboard))
                         <div class="text-carousel">
-                            <div class="text-carousel-inner" style="animation: slideText {{ count($noticeboard) * 8 }}s linear infinite;">
+                            <div class="text-carousel-inner" style="animation: slideText {{ count($noticeboard) * 14 }}s linear infinite;">
                                 @foreach($noticeboard as $notice)
                                     <span>{{ $notice }}</span>
                                     @if(!$loop->last) <span class="separator">|</span> @endif
